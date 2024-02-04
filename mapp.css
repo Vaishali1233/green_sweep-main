@@ -1,0 +1,10 @@
+h2{
+    align-items: center; 
+    text-align: center;
+}
+
+body{
+    font-family: 'Playfair Display', serif !important;
+    background-color: rgb(179, 235, 235);
+    background-size: cover;
+  }

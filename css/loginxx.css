@@ -1,0 +1,108 @@
+/* Uncomment the following lines if you want to apply styles to the html and body elements */
+/* html, body {
+    height: 100%;
+} */
+
+/* Container styles to center content vertically */
+.container {
+    height: 100%;
+    align-items: center;
+    align-content: center;
+    padding-top: 10px;
+}
+body{
+    font-family: 'Playfair Display', serif !important;
+    background-image: url("https://tirtyl.com.au/cdn/shop/articles/eco_friendly_120cd6de-0473-47d2-bbf4-45f526c82391_1200x1200.png?v=1659684410");
+    background-size: cover;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+body.my-login-page {
+    background-color: #0e5194;
+    background-size: cover;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+}
+
+/* Brand/logo styling */
+.my-login-page .brand {
+    text-align: center;
+    width: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 40px auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+    position: relative;
+    z-index: 1;
+}
+
+.my-login-page .brand img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Card wrapper and card styling */
+.my-login-page .card-wrapper {
+    width: 400px;
+}
+
+.my-login-page .card {
+    border-color: transparent;
+    box-shadow: 0 4px 8px rgba(0,0,0,.05);
+}
+
+.my-login-page .card.fat {
+    padding: 10px;
+}
+
+/* Form control styling */
+.my-login-page .form-control {
+    border-width: 2.3px;
+}
+
+.my-login-page .form-group label {
+    width: 100%;
+}
+
+/* Button styling */
+.my-login-page .btn.btn-block {
+    padding: 12px 10px;
+}
+
+/* Footer styling */
+.my-login-page .footer {
+    margin: 40px 0;
+    color: #888;
+    text-align: center;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 425px) {
+    .my-login-page .card-wrapper {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .my-login-page .card.fat {
+        padding: 0;
+    }
+
+    .my-login-page .card.fat .card-body {
+        padding: 15px;
+    }
+}

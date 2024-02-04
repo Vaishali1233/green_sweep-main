@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="mapp.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garbage Map</title>
+</head>
+
+<body>
+    <h2>Garbage Map</h2>
+    <div id="map" style="height: 500px;"></div>
+    <script src="map.js"></script>
+
+    <!-- ... (previous HTML code) ... -->
+
+<script>
+    async function initializeMap() {
+    console.log("Initializing map...");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const latitude = parseFloat(urlParams.get('lat')) || 0;  // Default to 0 if lat is not present
+    const longitude = parseFloat(urlParams.get('lon')) || 0;  // Default to 0 if lon is not present
+    const username = urlParams.get('username');
+
+    if (!username) {
+        console.error('Username not found in URL parameters.');
+        return;
+    }
+
+    const map = L.map('map').setView([latitude, longitude], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    try {
+        // Fetch all garbage locations for the current user
+        const response = await fetch('/get-all-entries');
+        const data = await response.json();
+
+        console.log("Fetched data:", data);
+
+        data.forEach(entry => {
+            if (entry.username === username) {
+                const entryLatitude = parseFloat(entry.latitude);
+                const entryLongitude = parseFloat(entry.longitude);
+
+                if (!isNaN(entryLatitude) && !isNaN(entryLongitude)) {
+                    // Check if entry latitude and longitude are valid numbers
+                    addMarker(map, entryLatitude, entryLongitude);
+                } else {
+                    console.error('Invalid latitude or longitude in fetched data:', entry);
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching garbage locations:', error);
+        alert('Error fetching garbage locations');
+    }
+}
+
+// Function to add a marker on the map for a given location
+const entryCounts = {};
+
+// Function to add a marker on the map for a given location
+function addMarker(map, latitude, longitude) {
+    const areaKey = `${latitude}-${longitude}`;
+
+    // Increase entry count for the area
+    entryCounts[areaKey] = (entryCounts[areaKey] || 0) + 1;
+    const marker = L.marker([latitude, longitude], {
+        icon: L.divIcon({
+            className: 'custom-marker',
+            html: '<div style="background-color: red; width: 24px; height: 24px; border-radius: 50%;"></div>',
+        }),
+    }).addTo(map);
+
+    // You can customize the popup content as needed
+    marker.bindPopup(`<p>Waste Area</p><p>Total Entries: ${entryCounts[areaKey]}</p>`).openPopup();
+}
+
+// Make sure to call initializeMap when the window has fully loaded
+window.onload = initializeMap;
+
+</script>
+
+</body>
+
+</html>

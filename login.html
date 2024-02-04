@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- <link rel="loginxheet" type="text/css" href="css/my-login.css"> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;638&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="css/loginx.css">
+    <!-- <script src="server.js"></script> -->
+</head>
+<body>
+    <section class="h-100">
+        <div class="container h-100" style="padding-top: 10px; padding-bottom: 10px; align-items: center">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="card-wrapper">
+                    <div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">Login</h4>
+							<form id="login-form" method="POST" class="my-login-validation" novalidate="">
+								<div class="form-group">
+									<label for="login-email">Email</label>
+									<input id="login-email" type="email" class="form-control" name="email" value="" required autofocus>
+									<div class="invalid-feedback">
+										Email is invalid
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="login-password">Password</label>
+									<input id="login-password" type="password" class="form-control" name="password" required data-eye>
+									<div class="invalid-feedback">
+										Password is required
+									</div>
+								</div>
+
+								<div class="form-group">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+                                        <label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and Conditions</a></label>
+                                        <div class="invalid-feedback">
+                                            You must agree with our Terms and Conditions
+                                        </div>
+                                    </div>
+                                </div>
+
+								<div class="form-group m-0">
+									<button type="button" onclick="login()">Login</button>
+								</div>
+								<div class="mt-4 text-center">
+									Don't have an account? <a href="register.html">Create One</a>
+								</div>
+							</form>
+						</div>
+					</div>
+				<div class="footer">
+					Copyright &copy; 2017 &mdash; Your Company 
+				</div>
+			</div>
+		</div>
+	</section>
+
+    <script>
+        function login() {
+	const email = document.getElementById('login-email').value;
+	const password = document.getElementById('login-password').value;    
+	const agreeCheckbox = document.getElementById('agree');
+
+	if (!agreeCheckbox.checked) {
+        alert('You must agree to the Terms and Conditions.');
+        return;
+    }
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: email,
+            password: password,
+        }),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Invalid credentials');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Server response:', data);
+
+        // Set the username in a variable instead of the hidden field
+		const loggedInUsername = data.username;
+        const loggedInPoints = data.points || 0;  // Default to 0 if points are undefined
+
+        alert('Login successful');
+        window.location.href = `landing.html?username=${loggedInUsername}`;
+    })
+    .catch(error => {
+        console.error('Error during login:', error);
+        document.getElementById('login-error').innerText = 'Invalid credentials. Please check your username and password.';
+        document.getElementById('login-error').style.display = 'block';
+    });
+}
+
+    function redirectToRegister() {
+        console.log('Redirecting to register.html'); 
+        window.location.href = 'register.html';
+    }
+
+    </script>
+</body>
+</html>

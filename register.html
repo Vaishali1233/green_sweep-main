@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;638&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" type="text/css" href="css/loginxx.css">
+    <!-- <script src="server.js"></script> -->
+</head>
+
+<body class="my-login-page">
+    <section class="h-100">
+        <div class="container" style="padding-top: 10px; padding-bottom: 10px; align-items: center;">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="card-wrapper">
+                    <div class="card fat">
+                        <div class="card-body">
+                            <h4 class="card-title">Register</h4>
+                            <form method="POST" class="my-login-validation" novalidate="">
+                                <div class="form-group">
+                                    <label for="register-username">Username</label>
+                                    <input id="register-username" type="text" class="form-control" name="name" required autofocus>
+                                    <div class="invalid-feedback">
+                                        What's your name?
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="register-email">E-Mail Address</label>
+                                    <input id="register-email" type="email" class="form-control" name="email" required>
+                                    <div class="invalid-feedback">
+                                        Your email is invalid
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="register-password">Password</label>
+                                    <input id="register-password" type="password" class="form-control" name="password" required data-eye>
+                                    <div class="invalid-feedback">
+                                        Password is required
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="register-phone">Phone</label>
+                                    <input id="register-phone" type="text" class="form-control" name="phone" required>
+                                    <div class="invalid-feedback">
+                                        Your phone number is required
+                                    </div>
+                                </div>                                
+
+                                <div class="form-group">
+                                    <div class="custom-checkbox custom-control">
+                                        <input type="checkbox" name="agree" id="agree" class="custom-control-input" required="">
+                                        <label for="agree" class="custom-control-label">I agree to the <a href="#">Terms and Conditions</a></label>
+                                        <div class="invalid-feedback">
+                                            You must agree with our Terms and Conditions
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="form-group m-0">
+                                    <button type="button" onclick="register()">Register</button>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    Already have an account? <a href="login.html">Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        Copyright &copy; 2024 &mdash; GreenSweep
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+
+       function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+
+            // In your client-side JavaScript
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email,
+                    phone: phone,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect to the specified URL
+                        window.location.href = 'login.html';
+                    } else {
+                        // Handle registration failure if needed
+                        console.error('Registration failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during registration:', error);
+                });
+
+        }
+        
+    </script>
+</body>
+
+</html>
